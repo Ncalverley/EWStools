@@ -580,6 +580,9 @@ modSearch <- function(methods, ...){
     p <- match(i, methods)
     z <- list(method = i)
     z <- c(z, args)
+    
+    eval(parse(text = paste0("z_", i, " <<- z")))
+    
     fit <- try(do.call(modTest, z), silent = TRUE)
     tmp <- tryCatch(dfExtract(fit), error = function(e) "No Model Ran")
     #
