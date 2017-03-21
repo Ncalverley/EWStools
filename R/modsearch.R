@@ -369,13 +369,9 @@ modTest <- function(method, datatype=c("train", "test"), traindata,
   } else{
     keep <-  1:ncol(traindata$preds)
   }
-  
-  callList <- list("method" = method, 
-                  "trControl" = quote(fitControl), 
-                   "tuneLength" = length, 
-                   "metric" = metric, 
-                   "x" = quote(traindata$preds[, keep]), 
-                   "y" = quote(traindata$class))
+  callList <- list(method = method, trControl = fitControl,
+                   tuneLength = length, metric = metric, x = quote(traindata$preds[,
+                                                                                   keep]), y = quote(traindata$class))
   if(!is.null(names(args))){
     callList <- c(callList, args)
     callList <- Filter(Negate(is.null), callList)
@@ -580,9 +576,6 @@ modSearch <- function(methods, ...){
     p <- match(i, methods)
     z <- list(method = i)
     z <- c(z, args)
-    
-    eval(parse(text = paste0("z_", i, " <<- z")))
-    
     fit <- try(do.call(modTest, z), silent = TRUE)
     tmp <- tryCatch(dfExtract(fit), error = function(e) "No Model Ran")
     #
